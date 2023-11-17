@@ -7,12 +7,10 @@ import '../model/user_model.dart';
 import 'package:http/http.dart' as http;
 
 class ApiService {
-  static const String baseUrl = 'http://192.168.100.8:2101/api/users';
-
   Future<void> createUser(BuildContext context, UserModel user) async {
     logger.i("API Called");
     final response = await http.post(
-      Uri.parse(baseUrl),
+      Uri.parse(BASE_URL),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode(user.toJson()),
     );
@@ -26,6 +24,9 @@ class ApiService {
     } else {
       logger.i('Failed to create user. Status code: ${response.statusCode}');
       logger.i('Response body: ${response.body}');
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text('Failed to create user.'),
+      ));
     }
   }
 }
